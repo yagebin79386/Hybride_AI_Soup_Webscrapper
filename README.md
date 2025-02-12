@@ -56,9 +56,13 @@ Most traditional web scrapers struggle with dynamic content and constantly chang
    ```bash
    pip install beautifulsoup4 undetected-chromedriver openai requests
 
-2. Set up your OpenAI API key to enable interaction with the GPT-4 model.
-   ```python
-   export OPENAI_API_KEY='your-api-key'
+2. Set OPENAI_API_KEY environment variable to enable interaction with the GPT-4 model:
+- macOS or Linux:
+  ```bash
+   export OPENAI_API_KEY="your_api_key_here"
+- Windows:
+  ```bash
+   setx OPENAI_API_KEY "your_api_key_here"
 
 3. Use the scraper by providing a list of base URLs:
    ```python
