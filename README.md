@@ -64,7 +64,7 @@ Most traditional web scrapers struggle with dynamic content and constantly chang
   ```bash
    setx OPENAI_API_KEY "your_api_key_here"
 
-4. Use the scraper by providing a list of base URLs:
+3. Use the scraper by providing a list of base URLs:
    ```python
    base_url = {List_base_URL}
    scrapper = NewsScraplerGeneral(base_url)
