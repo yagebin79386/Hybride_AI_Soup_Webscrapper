@@ -1,4 +1,4 @@
-class NewsScraplerGeneral:
+class NewsScrapperGeneral:
     def __init__(self, base_urls):
         """
         Initialize hte NewsScraplerGeneral with a list of base URLs.
@@ -268,7 +268,7 @@ class NewsScraplerGeneral:
 
 if __name__ == "__main__":
     base_url = {Your_list_of_webURLs}
-    scrapper = NewsScraplerGeneral(base_url)
+    scrapper = NewsScrapperGeneral(base_url)
     scrapper.find_all_pagination_urls()
     scrapper.get_and_clean_html()
     scrapper.extract_news_articles_with_chatgpt()
