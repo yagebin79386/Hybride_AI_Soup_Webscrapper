@@ -63,7 +63,7 @@ Most traditional web scrapers struggle with dynamic content and constantly chang
 3. Use the scraper by providing a list of base URLs:
    ```python
    base_url = {List_base_URL}
-   scrapper = NewsScraplerGeneral(base_url)
+   scrapper = NewsScrapperGeneral(base_url)
    scrapper.find_all_pagination_urls()
    scrapper.get_and_clean_html()
    scrapper.extract_news_articles_with_chatgpt()
