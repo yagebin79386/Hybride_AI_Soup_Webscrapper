@@ -1,0 +1,10 @@
+undetected_chromedriver.v2
+selenium.webdriver.common.by
+selenium.webdriver.support.ui
+selenium.webdriver.support
+bs4
+re
+time
+openai
+json
+urllib.parse
