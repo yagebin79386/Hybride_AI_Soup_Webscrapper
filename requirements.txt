@@ -1,10 +1,8 @@
 undetected_chromedriver.v2
-selenium.webdriver.common.by
-selenium.webdriver.support.ui
-selenium.webdriver.support
+selenium.webdriver
 bs4
 re
 time
 openai
 json
-urllib.parse
+urllib
