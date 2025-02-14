@@ -1,3 +1,16 @@
+import os
+import openai
+import json
+from urllib.parse import urlparse, urljoin
+import time
+import re
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import undetected_chromedriver.v2 as uc
+from bs4 import BeautifulSoup
+
+
 class NewsScrapperGeneral:
     def __init__(self, base_urls):
         """
@@ -159,6 +172,7 @@ class NewsScrapperGeneral:
         driver.quit()
     
     def extract_news_articles_with_chatgpt(self):
+        OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         """
         Extracts title, publication date, author, and link of each news thumbnail embedded in the given HTML of a news board using OpenAI's API.
         Automatically detects and appends the base URL if necessary.
