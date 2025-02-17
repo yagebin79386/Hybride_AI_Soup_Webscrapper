@@ -1,0 +1,8 @@
+undetected_chromedriver.v2
+selenium.webdriver
+bs4
+re
+time
+openai
+json
+urllib
