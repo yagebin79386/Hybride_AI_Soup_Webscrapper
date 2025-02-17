@@ -52,23 +52,28 @@ Most traditional web scrapers struggle with dynamic content and constantly chang
 - **Integration with OpenAI API**: By using the **OpenAI GPT-4** model, the tool can intelligently parse complex HTML and automatically extract the most relevant data, making it suitable for scraping a wide range of news websites without manually coding the extraction rules.
 
 ## **Installation and Usage**
-1. Install the required dependencies:
+1. Install Chrome/Chromium and the requirements.txt:
    ```bash
-   pip install beautifulsoup4 undetected-chromedriver openai requests
+   python3 -m pip install -r requirements.txt
 
-2. Set up your OpenAI API key to enable interaction with the GPT-4 model.
-   ```python
-   export OPENAI_API_KEY='your-api-key'
+2. Set OPENAI_API_KEY environment variable to enable interaction with the GPT-4 model:
+- macOS or Linux:
+  ```bash
+   export OPENAI_API_KEY="your_api_key_here"
+- Windows:
+  ```bash
+   setx OPENAI_API_KEY "your_api_key_here"
 
 3. Use the scraper by providing a list of base URLs:
    ```python
+   import NewsScraper
    base_url = {List_base_URL}
-   scrapper = NewsScrapperGeneral(base_url)
-   scrapper.find_all_pagination_urls()
-   scrapper.get_and_clean_html()
-   scrapper.extract_news_articles_with_chatgpt()
-   scrapper.flatten_news()
-   print(json.dumps(scrapper.webpages, indent=4))
+   scraper = NewsScraper.NewsScraperGeneral(base_url)
+   scraper.find_all_pagination_urls()
+   scraper.get_and_clean_html()
+   scraper.extract_news_articles_with_chatgpt()
+   scraper.flatten_news()
+   print(json.dumps(scraper.webpages, indent=4))
 
 ## Conclusion
 
