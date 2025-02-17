@@ -105,71 +105,69 @@ class NewsScrapperGeneral:
         
     def get_and_clean_html(self):
         """
-        Fetches the raw HTML from the given URL using undetected_chromedriver 
-        and cleans it by removing unnecessary elements while preserving 
-        the HTML structure.
-
-        Parameters:
-            url (str): The webpage URL.
-
+        Fetches raw HTML from URLs using undetected_chromedriver,
+        removes redundant attributes and safely irrelevant elements 
+        while keeping the general HTML structure.
+        
         Returns:
-            str: A cleaned HTML string with structure intact.
+            None (Stores minimized cleaned HTML in self.webpages)
         """
         options = uc.ChromeOptions()
-        options.headless = False  # Set to True for headless browsing
+        options.headless = True  # Run in headless mode
         options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
-        driver = uc.Chrome(options=options)   
+        driver = uc.Chrome(options=options)
+        
+        
 
         for page in self.webpages:
+            if page['base_url'] not in page["paginated_url"]:
+                page["paginated_url"].append(page["base_url"])
             for single_url in page["paginated_url"]:
                 try:
                     driver.get(single_url)
                     raw_html = driver.page_source
                 except Exception as e:
                     print(f"Failed to fetch {single_url}: {e}")
-                    continue  # Ensure driver quits to free resources
+                    continue
 
-                # Parse the raw HTML
+                # Parse the HTML
                 soup = BeautifulSoup(raw_html, "html.parser")
 
-                # Remove unnecessary tags
-                for tag in soup(["script", "style", "meta", "noscript", "iframe", "svg", "path",
-                                "link", "header", "footer", "aside", "nav", "form", "button", "object",
-                                "embed", "picture", "video", "audio", "source"]):
+                # **Step 1: Remove Irrelevant Elements**
+                for tag in soup([
+                    "script", "style", "meta", "noscript", "iframe", "svg", "path", "link",
+                    "header", "footer", "aside", "nav", "form", "button", "object",
+                    "embed", "picture", "video", "audio", "source", "input",
+                    "ins", "del", "noscript"
+                ]):
                     tag.decompose()
 
-                # Remove elements with srcset or src attributes (to exclude images)
-                for tag in soup.find_all(lambda tag: tag.has_attr("srcset") or tag.has_attr("src")):
-                    tag.decompose()
-
-                # Remove inline styles & unnecessary attributes
-                for element in soup.find_all(True):
-                    if element.has_attr("style"):
-                        del element["style"]
-                    for attr in ["fill", "d", "width", "height", "viewBox", "aria-hidden"]:
-                        if element.has_attr(attr):
-                            del element[attr]
-
-                # Remove empty elements
+                # **Step 2: Remove Empty & Decorative Elements**
                 for tag in soup.find_all():
-                    if not tag.get_text(strip=True):
+                    if not tag.get_text(strip=True):  # Remove empty elements
                         tag.decompose()
 
-                # Extract relevant content: Keep <article>, <section>, and <div> (common in news pages)
-                content_sections = soup.find_all(["article", "section", "div", "tr"], recursive=True)
+                # **Step 3: Remove Non-Informative Attributes**
+                for tag in soup.find_all(True):
+                    attrs_to_remove = ["class", "id", "role", "data-*", "aria-*", "onclick", "onload", "style"]
+                    for attr in list(tag.attrs):
+                        if any(re.match(pattern.replace("*", ".*"), attr) for pattern in attrs_to_remove):
+                            del tag[attr]
 
-                # Convert back to clean HTML while preserving structure
-                cleaned_html = "".join(str(section) for section in content_sections)
-
-                # Remove excessive whitespaces inside HTML tags while keeping structure
+                # **Step 4: Minimize Extra Whitespaces**
+                cleaned_html = str(soup)
                 cleaned_html = re.sub(r">\s+<", "><", cleaned_html)  # Remove spaces between tags
                 cleaned_html = re.sub(r"\n+", "", cleaned_html)  # Remove new lines
                 cleaned_html = re.sub(r"\s{2,}", " ", cleaned_html)  # Reduce multiple spaces
-                
+
+                # **Step 5: Store Minimized HTML**
                 page["html"].append(cleaned_html)
-        
+
         driver.quit()
+
     
     def extract_news_articles_with_chatgpt(self):
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
