@@ -1,8 +1,8 @@
 undetected_chromedriver
 selenium
 bs4
-requests
-time
+#re
+#time
 openai
-json
-urllib
+#json
+#urllib

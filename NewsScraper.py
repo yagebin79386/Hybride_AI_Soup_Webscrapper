@@ -3,11 +3,11 @@ import openai
 import json
 from urllib.parse import urlparse, urljoin
 import time
-import requests as re
+import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import undetected_chromedriver as uc
+import undetected_chromedriver.v2 as uc
 from bs4 import BeautifulSoup
 
 
