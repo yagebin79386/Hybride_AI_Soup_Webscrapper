@@ -1,4 +1,3 @@
-import os
 import openai
 import json
 from urllib.parse import urlparse, urljoin
@@ -7,11 +6,11 @@ import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import undetected_chromedriver.v2 as uc
+import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 
 
-class NewsScrapperGeneral:
+class NewsScraperGeneral:
     def __init__(self, base_urls):
         """
         Initialize hte NewsScraplerGeneral with a list of base URLs.
@@ -170,7 +169,6 @@ class NewsScrapperGeneral:
 
     
     def extract_news_articles_with_chatgpt(self):
-        OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         """
         Extracts title, publication date, author, and link of each news thumbnail embedded in the given HTML of a news board using OpenAI's API.
         Automatically detects and appends the base URL if necessary.
@@ -230,10 +228,10 @@ class NewsScrapperGeneral:
                 """
 
                 try:
-                    client = openai.OpenAI(api_key=OPENAI_API_KEY)
+                    client = openai.OpenAI()
 
                     response = client.chat.completions.create(
-                        model="gpt-4-turbo",
+                        model="gpt-4o-mini",
                         messages=[{"role": "system", "content": prompt}],
                         temperature=0.2
                     )
@@ -280,12 +278,12 @@ class NewsScrapperGeneral:
 
 if __name__ == "__main__":
     base_url = {Your_list_of_webURLs}
-    scrapper = NewsScrapperGeneral(base_url)
-    scrapper.find_all_pagination_urls()
-    scrapper.get_and_clean_html()
-    scrapper.extract_news_articles_with_chatgpt()
-    scrapper.flatten_news()
-    print(json.dumps(scrapper.webpages, indent=4))
+    scraper = NewsScraperGeneral(base_url)
+    scraper.find_all_pagination_urls()
+    scraper.get_and_clean_html()
+    scraper.extract_news_articles_with_chatgpt()
+    scraper.flatten_news()
+    print(json.dumps(scraper.webpages, indent=4))
 
     
 
