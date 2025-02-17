@@ -1,5 +1,5 @@
-undetected_chromedriver.v2
-selenium.webdriver
+undetected_chromedriver
+selenium
 bs4
 re
 time
