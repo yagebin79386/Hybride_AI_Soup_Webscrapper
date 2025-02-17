@@ -3,7 +3,7 @@ import openai
 import json
 from urllib.parse import urlparse, urljoin
 import time
-import re
+import requests as re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
